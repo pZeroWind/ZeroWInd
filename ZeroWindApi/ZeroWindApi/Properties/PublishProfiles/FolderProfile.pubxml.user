@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <_PublishTargetUrl>D:\DataS\C#project\ZeroWindApi\ZeroWindApi\bin\Release\net6.0\publish\</_PublishTargetUrl>
+    <History>True|2022-06-23T16:50:59.6629616Z;</History>
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="conn">
+      <Value>server=127.0.0.1%3bdatabase=zwdb%3bport=3306%3buser=pzw%3bpassword=Pu.123456</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+</Project>
