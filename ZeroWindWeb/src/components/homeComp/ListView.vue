@@ -96,7 +96,7 @@ change(0)
     &-list{
         min-height: 400px;
         min-width: 600px;
-        @media screen and (max-width: 500px) {
+        @media screen and (max-width: 768px) {
             min-width: auto;
         }
     }

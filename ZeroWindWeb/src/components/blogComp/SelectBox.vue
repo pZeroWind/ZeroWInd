@@ -1,24 +1,20 @@
 <script lang="ts" setup>
-interface SelectModel{
-    id: number,
-    value: any,
-    label: string,
-    selected: boolean
-}
+import { OptionModel } from "../../apis/typeApi"
 
 //入参
 const props = defineProps({
-    List: Array<SelectModel>
+    title:String,
+    list: Array<OptionModel>
 })
 
 //自定义返回函数
 const emits = defineEmits(["OnChange"])
 
-const OnSelected = (id: number) => {
-    if (props.List != undefined) {
-        for (let item of props.List) {
+const OnSelected = (id: any) => {
+    if (props.list) {
+        for (let item of props.list) {
             item.selected = false
-            if (item.id == id) {
+            if (item.value == id) {
                 item.selected = true
                 emits("OnChange",item.value)
             }
@@ -28,11 +24,44 @@ const OnSelected = (id: number) => {
 </script>
 
 <template>
-    <ul>
-        <li v-for="it in List" :key="it.id" @click="OnSelected(it.id)">{{it.label}}</li>
-    </ul>
+    <div class="SelectBox">
+        <div class="SelectBox-Title">
+            {{title}}
+        </div>
+        <ul class="SelectBox-List">
+            <li v-for="it in list" :key="it.value" @click="OnSelected(it.value)" :class="{Selected:it.selected}">{{it.label}}</li>
+        </ul>
+    </div>
 </template>
 
-<style>
-
+<style lang="scss" scoped>
+.SelectBox{
+    border-radius: 5px;
+    box-shadow: 0 0 5px #ddd;
+    width: 240px;
+    padding-bottom: 5px;
+    background-color: #fff;
+    margin: 5px;
+    &-Title{
+        font-size: 16px;
+        font-weight: bold;
+        padding: 10px;
+        padding-bottom: 0;
+    }
+    &-List{
+        display: flex;
+        flex-wrap: wrap;
+        li{
+            padding: 10px;
+            cursor: pointer;
+            color: #aaa;
+            list-style: none;
+            font-size: 14px;
+            
+        }
+        .Selected{
+            color: #333;
+        }
+    }
+}
 </style>

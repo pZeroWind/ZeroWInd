@@ -4,6 +4,7 @@ using MySql.Data.MySqlClient;
 using ZeroWindApi.Models;
 using ZeroWindApi.Models.DBModels;
 using Dapper;
+using ZeroWindApi.Models.RequestModels;
 
 namespace ZeroWindApi.Controllers
 {
@@ -23,14 +24,14 @@ namespace ZeroWindApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<Result<List<Types>>> Get()
+        public async Task<Result<IEnumerable<OptionModel<int>>>> Get()
         {
             //实例化返回模型
-            Result<List<Types>> result = new Result<List<Types>>();
+            Result<IEnumerable<OptionModel<int>>> result = new Result<IEnumerable<OptionModel<int>>>();
             try
             {
                 //查询分区列表
-                result.Data = (await _db.QueryAsync<Types>("select * from types")).ToList();
+                result.Data = await _db.QueryAsync<OptionModel<int>>("select id value,name label from types");
             }
             catch (Exception ex)
             {

@@ -1,6 +1,6 @@
 import axios from "../plugins/axios";
 
-const url = "/Tags"
+const url = "/Tag"
 
 export class Tag {
     Get(val: string, out: Function) {

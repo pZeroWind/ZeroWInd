@@ -56,7 +56,7 @@ userApi.get((res:
 <style lang="scss" scoped>
 .UserBox{
     width: 240px;
-    min-height: 300px;
+    min-height: 400px;
     padding: 10px;
     margin: 5px;
     user-select: none;
@@ -97,9 +97,10 @@ userApi.get((res:
             }
         }
     }
-    @media screen and (max-width: 500px) {
+    @media screen and (max-width: 768px) {
         width: auto;
         height: 75px;
+        min-height: 0px;
         margin-bottom: 20px;
         display: flex;
         align-items: center;

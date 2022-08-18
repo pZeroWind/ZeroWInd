@@ -4,7 +4,8 @@ const url = "/Type"
 
 export interface OptionModel {
     value: string | number,
-    label: string
+    label: string,
+    selected: boolean
 }
 
 export class Type {

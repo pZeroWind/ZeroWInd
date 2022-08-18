@@ -58,6 +58,7 @@ blogApi.getById(id, (res: ResultModel<BlogModel>) => {
 </template>
 
 <style lang="scss" scoped>
+
 .details {
     background-color: white;
     border-radius: 5px;
@@ -112,7 +113,7 @@ blogApi.getById(id, (res: ResultModel<BlogModel>) => {
         padding-top: 10px;
     }
 
-    @media screen and (max-width: 500px) {
+    @media screen and (max-width: 768px) {
         min-width: auto;
         min-height: auto;
         box-shadow: none;

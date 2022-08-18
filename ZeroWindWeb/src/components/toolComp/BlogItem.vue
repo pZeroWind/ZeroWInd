@@ -31,6 +31,7 @@ const urlPath: string = String(props.path)
 <style lang="scss" scoped>
 
 
+
 a{
     text-decoration: none;
     color: #000;
@@ -76,7 +77,7 @@ a{
         color: #aaa;
         text-align: right;
     }
-    @media screen and (max-width: 500px) {
+    @media screen and (max-width: 768px) {
         min-width: auto;
     }
 }

@@ -7,12 +7,6 @@ import { useRouter } from 'vue-router';
 const userApi = new User()
 //路由控制
 const router = useRouter();
-//判断token是否存在
-let token = sessionStorage.getItem("token")
-if (token) {
-    router.push("/sys/user")
-}
-
 //验证码
 const password = ref("");
 //倒计时
@@ -22,7 +16,7 @@ const GetCode = () => {
     code.value = 60;
     userApi.getCode((res: ResultModel<any>) => {
         if (res.code === 200) {
-            var timer = setInterval(() => {
+            const timer = setInterval(() => {
                 code.value--;
                 if (code.value === 0) {
                     clearInterval(timer);
@@ -34,6 +28,8 @@ const GetCode = () => {
 
 //登入后台
 const Login = () => {
+    router.push("/sys/user");
+
     userApi.login(password.value, (res: ResultModel<string>) => {
         if (res.code === 200) {
             sessionStorage.setItem("token", res.data);

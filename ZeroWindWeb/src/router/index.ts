@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router"
+import { createRouter, createWebHistory, RouteLocationNormalized, RouteRecordNormalized } from "vue-router"
 import HomeView from "../page/HomeView.vue"
 import BlogView from "../page/BlogView.vue"
 import TrendView from "../page/TrendView.vue"
@@ -10,6 +10,17 @@ import UserSysView from "../components/sysComp/UserSysView.vue"
 import NotFoundView from "../page/NotFoundView.vue"
 import BlogWriteView from "../components/sysComp/BlogWriteView.vue"
 
+//路由拦截器
+const wall = async (to: RouteLocationNormalized) => {
+  // if ((to.name === "User" || to.name === "BlogSys" || to.name === "BlogSysModif" || to.name !== "Login")) {
+  //   let token = localStorage.getItem("token")
+  //   if (token) {
+  //     return true
+  //   } else {
+  //     return { name: "Login" }
+  //   }
+  // }
+}
 
 const routes = [
   {
@@ -50,17 +61,20 @@ const routes = [
       {
         path: "user",//个人数据管理
         name: "User",
-        component: UserSysView
+        component: UserSysView,
+        beforeEnter: wall
       },
       {
         path: "blog",//博客管理
         name: "BlogSys",
-        component: BlogSysView
+        component: BlogSysView,
+        beforeEnter: wall
       },
       {
         path: "blog/:id",//博客修改
         name: "BlogSysModif",
-        component: BlogWriteView
+        component: BlogWriteView,
+        beforeEnter: wall
       }
     ]
   },

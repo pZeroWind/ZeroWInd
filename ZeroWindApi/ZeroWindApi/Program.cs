@@ -1,10 +1,16 @@
 using Microsoft.AspNetCore.Mvc;
 using StackExchange.Redis;
 using ZeroWindApi.Models;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 
 var builder = WebApplication.CreateBuilder(args);
 //注入Redis
-//builder.Services.AddSingleton();
+builder.Services.AddStackExchangeRedisCache(op =>
+{
+    op.Configuration = builder.Configuration.GetConnectionString("redis");
+    op.InstanceName = "RedisDB";
+});
 //注入Dapper上下文
 builder.Services.AddScoped<DapperContext>();
 //配置跨域

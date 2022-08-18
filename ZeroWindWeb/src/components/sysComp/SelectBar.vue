@@ -1,9 +1,7 @@
 <script lang="ts" setup>
-
-const props = defineProps({
-    id:Number
-})
-
+import { ref } from "@vue/reactivity"
+import {useRoute} from "vue-router"
+const router = useRoute().path
 //后台列表
 const list = [
     {
@@ -21,13 +19,21 @@ const list = [
         name: "动态管理",
         path: "/sys/trend",
     },
+    {
+        id: 4,
+        name: "网页收藏",
+        path: "/sys/webSave",
+    },
 ]
-
+const id = ref(list.filter(p => p.path == router)[0].id)
+const RouteChange = (v:number) => {
+    id.value = v
+}
 </script>
 
 <template>
     <div class="selectBar">
-        <router-link v-for="it in list" :key="it.id" :to="it.path">
+        <router-link v-for="it in list" :key="it.id" :to="it.path" @click="RouteChange(it.id)">
             <div class="selectBar-list" :class="{sel:id==it.id}">{{it.name}}
             </div>
         </router-link>
@@ -37,7 +43,6 @@ const list = [
 
 
 <style lang="scss" scoped>
-
 .selectBar{
     a{
         text-decoration: none;

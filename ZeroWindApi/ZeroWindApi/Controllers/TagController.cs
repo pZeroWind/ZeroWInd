@@ -29,7 +29,7 @@ namespace ZeroWindApi.Controllers
             try
             {
                 //获取标签列表
-                IEnumerable<OptionModel<string>> result = await _db.QueryAsync<OptionModel<string>>("select top 5 distinct name Value,name Label from tags where name like CONCAT('%',@Val,'%') order by count(*) desc", new
+                IEnumerable<OptionModel<string>> result = await _db.QueryAsync<OptionModel<string>>("select name Value,name Label from tags where name like CONCAT('%',@Val,'%') group by name order by count(name) desc limit 0,5", new
                 {
                     Val = val
                 });

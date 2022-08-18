@@ -1,6 +1,6 @@
 const axiosConfig = {
-    //baseURL: "http://zerowind.top:5001" //正式
-    baseURL: "http://127.0.0.1:5001/api" //测试
+    baseURL: "http://zerowind.top:5001/api" //正式
+    //baseURL: "http://127.0.0.1:5001/api" //测试
 }
 
 //返回内容模型

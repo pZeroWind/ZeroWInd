@@ -22,6 +22,8 @@
 <style lang="scss" scoped>
 //导航栏
 #menu{
+    position: sticky;
+    top:0;
     display: flex;
     box-shadow: 0 0 5px #ddd;
     background-color: #fff;
@@ -54,7 +56,7 @@
     a{
       text-decoration: none;
     }
-    @media screen and (max-width: 500px) {
+    @media screen and (max-width: 768px) {
       .logo{
         display: none;
       }

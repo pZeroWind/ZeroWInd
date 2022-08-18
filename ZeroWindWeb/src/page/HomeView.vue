@@ -12,10 +12,11 @@ import ListView from '../components/homeComp/ListView.vue';
 </template>
 
 <style lang="scss" scoped>
+
 .content{
     padding: 25px;
     display: flex;
-    @media screen and (max-width: 500px) {
+    @media screen and (max-width: 768px) {
       display: block;
     }
 }

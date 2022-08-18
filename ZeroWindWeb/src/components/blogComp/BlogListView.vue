@@ -7,6 +7,7 @@ import { PageModel, ResultModel } from "../../plugins/axiosConfig";
 import { GetDate, ClearHtml } from "../../plugins/Tool";
 import BlogItem from "../toolComp/BlogItem.vue";
 import SelectBox from "./SelectBox.vue";
+import TagListBox from "./TagListBox.vue";
 //注入Api
 const blogApi = new Blog()
 const typeApi = new Type()
@@ -46,7 +47,8 @@ GetTags("")
 const opType: OptionModel[] = reactive([
     {
         value: 0,
-        label:"全部"
+        label: "全部",
+        selected: true
     }
 ])
 typeApi.Get((res: ResultModel<OptionModel[]>) => {
@@ -57,21 +59,21 @@ typeApi.Get((res: ResultModel<OptionModel[]>) => {
 const orderType: OptionModel[] = reactive([
     {
         value: 0,
-        label: "更新-正序"
-    },
-    {
-        value: 1,
-        label: "更新-倒序"
+        label: "最近更新",
+        selected: true
     },
     {
         value: 2,
-        label: "发布-正序"
+        label: "最新发布",
+        selected: false
     },
     {
         value: 3,
-        label: "发布-倒序"
+        label: "最早发布",
+        selected: false
     }
 ])
+
 
 //获取博客列表
 const GetList = () => {
@@ -92,66 +94,78 @@ const PageChange = (page: number) => {
     srcModel.page = page
     GetList()
 }
+//排序变更
+const OrderChange = (v: number) => {
+    srcModel.order = v
+    GetList()
 
-const SelList = [
-    {
-        id: 1,
-        value: "1",
-        label: "1",
-        selected:false
-    },
-    {
-        id: 2,
-        value: "12",
-        label: "12",
-        selected: false
-    }
-]
-
+}
+//分区变更
+const AreaChange = (v: number) => {
+    srcModel.type = v
+    GetList()
+}
+//重置搜索条件
+const Reset = () => {
+    srcModel.page = 1
+    srcModel.order = 0
+    opType.forEach(async function(p, i) {
+        if(i==0) {
+          p.selected=true;
+        } else {
+          p.selected=false;
+        }
+      })
+    orderType.forEach(async function(p, i) {
+        if (i == 0) {
+            p.selected = true
+        } else {
+            p.selected = false
+        }
+    })
+    srcModel.type = 0
+    srcModel.search = ""
+    srcModel.tags.length = 0
+    GetList()
+}
 //默认加载
 GetList()
 </script>
 
 <template>
     <div v-loading="load" class="list">
-        <div class="list-search">
-            <select-box :list="SelList"></select-box>
-            <div class="list-search-model">
-                <el-select v-model="srcModel.type" placeholder="分区" style="width: 75px;height: 35px;">
-                    <el-option v-for="it in opType" :key="it.value" :label="it.label" :value="it.value" />
-                </el-select>
-                <el-select v-model="srcModel.order" placeholder="排序" style="width: 110px;height: 35px;margin: 0 5px;">
-                    <el-option v-for="it in orderType" :key="it.value" :label="it.label" :value="it.value" />
-                </el-select>
-                <el-input v-model="srcModel.search" placeholder="标题查询"
-                    style="width: 400px;height: 35px;margin: 0 5px;" />
-                <button @click="GetList">查询</button>
+        <div>
+            <select-box title="分区" :list="opType" @on-change="AreaChange"></select-box>
+            <select-box title="排序" :list="orderType" @on-change="OrderChange"></select-box>
+            <tag-list-box title="标签"></tag-list-box>
+        </div>
+        <div style="width: 700px;">
+            <div class="list-search">
+                <el-input v-model="srcModel.search" placeholder="搜索你想知道的博客内容..." style="width: 400px;height: 35px;" />
+                <button @click="GetList">搜索</button>
+                <button @click="Reset">重置</button>
             </div>
-        </div>
-        <el-select v-model="srcModel.tags" multiple placeholder="标签查询" style="height: 35px;margin: 0 5px;" allow-create
-            filterable default-first-option :multiple-limit="5" :loading="loading" :remote-method="GetTags" remote>
-            <el-option v-for="it in tags" :key="it.value" :label="it.label" :value="it.value" />
-        </el-select>
-        <div class="list-box">
-            <blog-item v-for="it in list" :key="it.id" :title="it.title" :id="it.id" :context="ClearHtml(it.context)"
-                :create-time="GetDate(it.createTime)" :update-time="GetDate(it.updateTime)" :tags="it.tags"
-                :path="'/blog/'" />
-        </div>
-        <div class="list-pager">
-            <el-pagination background layout="prev, pager, next" :total="count" :page-size="srcModel.size"
-                @current-change="PageChange" />
+            <div class="list-box">
+                <blog-item v-for="it in list" :key="it.id" :title="it.title" :id="it.id"
+                    :context="ClearHtml(it.context)" :create-time="GetDate(it.createTime)"
+                    :update-time="GetDate(it.updateTime)" :tags="it.tags" :path="'/blog/'" />
+            </div>
+            <div class="list-pager">
+                <el-pagination background layout="prev, pager, next" :total="count" :page-size="srcModel.size"
+                    @current-change="PageChange" />
+            </div>
         </div>
     </div>
 </template>
 
 <style lang="scss" scoped>
+
     .list{
         display: flex;
-        flex-direction: column;
         margin: 0px 5px;
-        min-height: 600px;
         &-box{
-            flex: 1
+            flex: 1;
+            min-height: 500px;
         }
         &-pager{
             display: flex;
@@ -161,10 +175,11 @@ GetList()
         &-search{
             margin: 5px;
             display: flex;
+            align-items: center;
             button{
                 cursor: pointer;
                 padding: 7px 20px;
-                margin: 0 5px;
+                margin: 5px;
                 border: none;
                 font-weight: bold;
                 background-color: #fff;
